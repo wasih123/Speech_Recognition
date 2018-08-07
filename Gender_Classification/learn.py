@@ -53,7 +53,7 @@ def train_model(train_file, test_file):
 				  metrics=['accuracy'])
 
 	model.fit(X_train, y_train,
-			  epochs=10,.0
+			  epochs=10,
 			  batch_size=128)
 			  
 	score = model.evaluate(X_val, y_val, batch_size=128)	#accuracy on validation set

@@ -26,6 +26,7 @@ import os
 import sys
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from keras.models import load_model
 #done with standard imports
 
 import Gender_Classification.integrate as integ
@@ -70,8 +71,10 @@ def get_gender(input_url, input_audio = None):
 		mtw.convert_mp3_to_wav('test_point.mp3')
 		remove_silence('test_point.wav')
 		features = np.array(exf.get_features('test_point_rmsilence.wav'))
+		print(features)
 		model = load_model('gender_nn')
 		scaler = StandardScaler()
+		scaler.fit(features[:,0:136])
 		[a, b] = model.evaluate(scaler.transform(features[:,0:136]), features[:,136])
 		if b > 0.5:
 			return 0
@@ -86,11 +89,18 @@ def get_gender(input_url, input_audio = None):
 		features = np.array(exf.get_features(input_audio_name + '_rmsilence.wav'))
 		model = load_model('gender_nn')
 		scaler = StandardScaler()
+		scaler.fit(features[:,0:136])
 		[a, b] = model.evaluate(scaler.transform(features[:,0:136]), features[:,136])
 		if b > 0.5:
 			return 0
 		else:
 			return 1
+#***************************************************---------------------------------------------------------------------------*************************************************	
+
+
+def train(train_file,test_file):
+	learn.train_model(train_file,test_file)
+
 #***************************************************---------------------------------------------------------------------------*************************************************	
 
 

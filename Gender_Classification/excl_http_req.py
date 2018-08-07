@@ -6,7 +6,7 @@ def get_audio_from_url(input_url, output_file):
 	Given an audio url, this function will fetch it and generate an mp3 file for it;
 	output_file should be a proper name for an mp3, i.e. ending with .mp3
 	'''
-	mp3file = urlib2.urlopen(input_url)
+	mp3file = urllib2.urlopen(input_url)
 	FP = open(output_file, 'wb')
 	FP.write(mp3file.read())
 	FP.close()
