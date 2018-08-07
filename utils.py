@@ -27,6 +27,7 @@ import sys
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from keras.models import load_model
+from subprocess import Popen
 #done with standard imports
 
 import Gender_Classification.integrate as integ
@@ -40,8 +41,37 @@ import Gender_Classification.excl_http_req as exhr
 import Silence_Removal.sln as sln
 #done with Silence_Removal imports
 
+import Automatic_Transcripts.combine_script as cs
+import Automatic_Transcripts.script as sc
+#done with Automatic_Transcripts imports
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+#LOW LEVEL routines
+
+def train(train_file, test_file):
+	'''
+	This function will train the neural network;
+	train_file is input.csv and test_file is test.csv
+	'''
+	learn.train_model(train_file,test_file)
+#***************************************************---------------------------------------------------------------------------*************************************************	
+
+def authenticate_user(path_to_key):
+	'''
+	Given path to key.json file(used for authentication), this function will generate access token file
+	'''
+	os.environ['key_path'] = path_to_key
+	p1 = Popen(['gcloud auth activate-service-account --key-file=${key_path}'], shell = 'True')
+	p1.wait()
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path_to_key
+	p2 = Popen(['gcloud auth application-default print-access-token > access-token'], shell = 'True')
+#***************************************************---------------------------------------------------------------------------*************************************************	
+	
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+
+
+#HIGH LEVEL routines
 
 def remove_silence(input_audio):
 	'''
@@ -52,7 +82,7 @@ def remove_silence(input_audio):
 	output_audio, ext = os.path.splitext(input_audio)
 	output_audio += '_rmsilence.wav'
 	sln.remove_silence(input_audio, output_audio)
-#***************************************************---------------------------------------------------------------------------*************************************************
+#***************************************************--------------------------------------------------------------------*********************************************************
 
 def get_gender(input_url, input_audio = None):
 	'''
@@ -97,15 +127,44 @@ def get_gender(input_url, input_audio = None):
 			return 1
 #***************************************************---------------------------------------------------------------------------*************************************************	
 
-
-def train(train_file,test_file):
-	learn.train_model(train_file,test_file)
-
-#***************************************************---------------------------------------------------------------------------*************************************************	
-
-
-
-
+def get_automatic_transcript(input_url, path_to_key, bucket_name, input_audio = None, silence_removal = None):
+	'''
+	Given an input_url or input_audio in .mp3 format and whether to remove silence or not;
+	this function will generate a file, 'AutomaticTrans.txt' which will contain the automatic transcript for this audio
+	'''
+	authenticate_user(path_to_key)
+	if(input_audio == None):
+		exhr.get_audio_from_url(input_url, 'test_point.mp3')
+		mtw.convert_mp3_to_wav('test_point.mp3')
+		if(silence_removal):
+			remove_silence('test_point.wav')
+			sc.get_transcript('test_point_rmsilence.wav', bucket_name)
+			cs.integrate_transcripts('test_point_rmsilence.wav')
+		else:
+			sc.get_transcript('test_point.wav')
+			cs.integrate_transcripts('test_point.wav')
+	
+	else:
+		mtw.convert_mp3_to_wav(input_audio)
+		input_audio_name, ext = os.path.splitext(input_audio)
+		input_audio_wav = input_audio_name + '.wav'
+		if(silence_removal):
+			remove_silenc
+			e(input_audio_wav)
+			sc.get_transcript(input_audio_name + '_rmsilence.wav')
+			cs.integrate_transcripts(input_audio_name + '_rmsilence.wav')
+		else:
+			sc.get_transcript(input_audio_name)
+			cs.integrate_transcripts(input_audio_name)
+	
+	F = open('AutomaticTrans.txt', 'w')
+	f = open('MainTranscript.txt', 'r')
+	lines = f.readlines()
+	for line in lines:
+		F.write(line)
+	os.remove('MainTranscript.txt')
+	F.close()
+#********************************************************---------------------------------------------------------------------**************************************************
 
 
 
