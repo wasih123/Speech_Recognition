@@ -1,0 +1,9 @@
+This directory contains scripts for obtaining transcripts using Google Speech API
+1. main.py is the main script which calls script.py and combine_script.py
+2. Input files should be placed in a folder named 'audio' 
+3. main.py will go through each of the file in audio, and upload it to the bucket on cloud and then obtain the transcripts.
+4. To run, first go to virtual env:
+	source env/bin/activate
+   and then type: python main.py
+5. output will be a .txt file, which will contain the transcripts for each audio file, segregated according to timestamps
+

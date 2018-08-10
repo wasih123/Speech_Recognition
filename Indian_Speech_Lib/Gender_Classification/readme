@@ -1,0 +1,6 @@
+This is our code for gender classification.
+We have first extracted features from audio files and then used them as training data set.
+We have trained a neural network for the same.
+learn.py has code for training the data and predicting output
+p1.py would extract features from audio files and generate a csv file out of it
+excl_http_req.py  would download audio files from url mentioned in excel(.xlsx) file
