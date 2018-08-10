@@ -1,0 +1,5 @@
+recursive-include Indian_Speech_Lib/Accuracy_Metric *
+recursive-include Indian_Speech_Lib/Automatic_Transcripts *
+recursive-include Indian_Speech_Lib/Gender_Classification *
+recursive-include Indian_Speech_Lib/Silence_Removal *
+recursive-include Indian_Speech_Lib/models *
