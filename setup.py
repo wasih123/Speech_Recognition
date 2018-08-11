@@ -6,10 +6,10 @@ setup(
     name = "Indian_Speech_Lib",
 
     # Version number (initial):
-    version = "1.0.2",
+    version = "1.0.4",
 
     # Application author details:
-    author= "Mohd Wasih",
+    author= "Mohd Wasih, Jayanth Reddy",
     author_email = "wasih.mohd@gmail.com",
 
     # Packages
@@ -19,7 +19,7 @@ setup(
     include_package_data = True,
 
     # Details
-    url="http://pypi.python.org/pypi/Indian_Speech_Lib_v101/",
+    url="http://pypi.python.org/pypi/Indian_Speech_Lib_v104/",
 
     #
     # license="LICENSE.txt",
