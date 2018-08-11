@@ -21,9 +21,9 @@ input_audio = os.listdir(path)
 for audio in input_audio:
 	print(audio)
 	os.environ["audio"]=audio
-	p = Popen(['python script.py ${audio}'],shell='true')
+	p = Popen(['python script.py ${audio}'], shell='true')
 	p.wait()
-	p = Popen(['python combine_script.py ${audio}'],shell='true')
+	p = Popen(['python combine_script.py ${audio}'], shell='true')
 	p.wait()
 	f = open('MainTranscript.txt','r')
 	lines = f.readlines()
